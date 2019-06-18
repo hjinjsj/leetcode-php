@@ -121,10 +121,7 @@ class LRUCache {
     function adjustToTail($key)
     {
         // 如果是头结点则需要调整到尾巴节点，非头结点的话也需要放到尾巴节点
-        $node = $this->tail;
-        while ($node->key != $key) {
-            $node = $node->prev;
-        }
+        $node = $this->dict[$key];
         if ($node->next) {
             $node->next->prev = $node->prev;
             if (!$node->prev) {
@@ -147,3 +144,29 @@ class LRUCache {
  * $ret_1 = $obj->get($key);
  * $obj->put($key, $value);
  */
+
+//$obj = new LRUCache(2);
+//$obj->put(1, 1);
+//$obj->put(2, 2);
+//$ret_1 = $obj->get(1);
+//var_dump($ret_1);
+//$obj->put(3, 3);
+//$ret_1 = $obj->get(2);
+//var_dump($ret_1);
+//$obj->put(4, 4);
+//$ret_1 = $obj->get(1);
+//var_dump($ret_1);
+//$ret_1 = $obj->get(3);
+//var_dump($ret_1);
+//$ret_1 = $obj->get(4);
+//var_dump($ret_1);
+
+//$obj = new LRUCache(2);
+//$obj->put(2, 1);
+//$obj->put(1, 2);
+//$obj->put(2, 3);
+//$obj->put(4, 1);
+//$ret_1 = $obj->get(1);
+//var_dump($ret_1);
+//$ret_1 = $obj->get(2);
+//var_dump($ret_1);
