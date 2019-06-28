@@ -1,43 +1,73 @@
 <?php
-
-//给定一个整数 n，求以 1 ... n 为节点组成的二叉搜索树有多少种？
+//给定一个二叉树，判断其是否是一个有效的二叉搜索树。
 //
-//示例:
+//假设一个二叉搜索树具有如下特征：
 //
-//输入: 3
-//输出: 5
-//解释:
-//给定 n = 3, 一共有 5 种不同结构的二叉搜索树:
+//节点的左子树只包含小于当前节点的数。
+//节点的右子树只包含大于当前节点的数。
+//所有左子树和右子树自身必须也是二叉搜索树。
+//示例 1:
 //
-//   1         3     3      2      1
-//    \       /     /      / \      \
-//     3     2     1      1   3      2
-//    /     /       \                 \
-//   2     1         2                 3
+//输入:
+//    2
+//    / \
+//    1   3
+//输出: true
+//示例 2:
+//
+//输入:
+//    5
+//    / \
+//    1   4
+//     / \
+//    3   6
+//输出: false
+//解释: 输入为: [5,1,4,null,null,3,6]。
+//     根节点的值为 5 ，但是其右子节点值为 4 。
 //
 //来源：力扣（LeetCode）
-//链接：https://leetcode-cn.com/problems/unique-binary-search-trees
+//链接：https://leetcode-cn.com/problems/validate-binary-search-tree
 //著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 /**
- * 一定要明确含义，意思是找到中序遍历必须是1->2->3...->n
- * Class Solution
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     public $val = null;
+ *     public $left = null;
+ *     public $right = null;
+ *     function __construct($value) { $this->val = $value; }
+ * }
  */
 class Solution {
-
+    public $arr;
+    public $nums;
     /**
-     * @param Integer $n
-     * @return Integer
+     * @param TreeNode $root
+     * @return Boolean
      */
-    function numTrees($n) {
-        $dp = [];
-        $dp[0] = 1;
-        $dp[1] = 1;
+    function isValidBST($root) {
+        if (!$root) {
+            return true;
+        }
+        $this->arr = [];
+        $this->nums = 0;
+        $this->bst($root, 0);
+        $pre = $this->arr[0];
+        for ($i = 1; $i < $this->nums; $i++) {
+            if ($this->arr[$i] <= $pre) {
+                return false;
+            }
+            $pre = $this->arr[$i];
+        }
+        return true;
+    }
 
-        for($i = 2; $i < $n + 1; $i++)
-            for($j = 1; $j < $i + 1; $j++)
-                $dp[$i] += $dp[$j-1] * $dp[$i-$j];
-
-        return $dp[$n];
+    //中序遍历
+    function bst($tree, $pos) {
+        if ($tree) {
+            $this->bst($tree->left, $pos * 2 + 1);
+            $this->arr[$this->nums++] = $tree->val;
+            $this->bst($tree->right, $pos * 2 + 2);
+        }
     }
 }
